@@ -63,9 +63,9 @@ export async function resolveFileAndLine(
       return {fileName, line: lineNumber}
     }
 
-    const escapedFileName = fileName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace('::', '/') // Rust test output contains colons between package names - See: https://github.com/mikepenz/action-junit-report/pull/359
+    // const escapedFileName = fileName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace('::', '/') // Rust test output contains colons between package names - See: https://github.com/mikepenz/action-junit-report/pull/359
 
-    const matches = output.match(new RegExp(` [^ ]*${escapedFileName}.*?:\\d+`, 'g'))
+    const matches = output.match(new RegExp(` [^ ]*(\\w+\\/)*\\w+\\.rs:\\d+`, 'g'))
     if (!matches) return {fileName, line: lineNumber || 1}
 
     const [lastItem] = matches.slice(-1)
